@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" prefWidth="971.0" style="-fx-background-color: #280028;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.controller">
+   <children>
+      <Pane fx:id="root" layoutY="185.0" onMouseDragged="#ClickEventDragged" onMouseMoved="#ClickEventDragged" onMousePressed="#ClickEventPressed" onMouseReleased="#ClickEventReleased" prefHeight="564.0" prefWidth="971.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Circle fill="WHITE" layoutX="915.0" layoutY="489.0" radius="34.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.bottomAnchor="41.0" AnchorPane.rightAnchor="22.0" />
+      <Button fx:id="shiftdown" ellipsisString="" layoutX="897.0" layoutY="505.0" mnemonicParsing="false" onAction="#shiftdown" prefHeight="36.0" prefWidth="36.0" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="38.0" />
+      <Button fx:id="shiftup" ellipsisString="" layoutX="897.0" layoutY="437.0" mnemonicParsing="false" onAction="#shiftup" prefHeight="36.0" prefWidth="36.0" AnchorPane.bottomAnchor="91.0" AnchorPane.rightAnchor="38.0" />
+      <Button fx:id="shiftleft" ellipsisString="" layoutX="863.0" layoutY="471.0" mnemonicParsing="false" onAction="#shiftleft" prefHeight="36.0" prefWidth="36.0" textAlignment="CENTER" AnchorPane.bottomAnchor="57.0" AnchorPane.rightAnchor="72.0" />
+      <Button fx:id="shiftright" ellipsisString="" layoutX="931.0" layoutY="471.0" mnemonicParsing="false" onAction="#shiftright" prefHeight="36.0" prefWidth="36.0" AnchorPane.bottomAnchor="57.0" AnchorPane.rightAnchor="4.0" />
+      <Slider fx:id="shift" layoutX="864.0" layoutY="540.0" max="1000.0" min="50.0" onMouseReleased="#onShiftChanged" prefHeight="21.0" prefWidth="103.0" value="500.0" AnchorPane.bottomAnchor="3.0" AnchorPane.rightAnchor="4.0" />
+      <Button fx:id="stopBtn" ellipsisString="" layoutX="882.0" layoutY="14.0" mnemonicParsing="false" onAction="#OnstopPressed" prefHeight="60.0" prefWidth="77.0" text="| |" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="14.0">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Button>
+      <Button fx:id="playBtn" ellipsisString="▶" layoutX="881.0" layoutY="14.0" mnemonicParsing="false" onAction="#OnplayPressed" prefHeight="64.0" prefWidth="77.0" text="▶" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="14.0">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Button>
+      <Slider fx:id="displayRatioSlider" blockIncrement="0.01" layoutX="942.0" layoutY="170.0" majorTickUnit="0.1" max="0.3" min="-2.0" minorTickCount="0" onMouseReleased="#onDisplayRatioSliderChanged" orientation="VERTICAL" prefHeight="225.0" prefWidth="0.0" showTickLabels="true" showTickMarks="true" AnchorPane.bottomAnchor="169.0" AnchorPane.rightAnchor="15.0" />
+      <Label layoutX="916.0" layoutY="155.0" style="-fx-border-color: white;" text="Zoom in" textFill="WHITE" AnchorPane.bottomAnchor="394.0" AnchorPane.rightAnchor="7.0" />
+      <Label layoutX="912.0" layoutY="395.0" style="-fx-border-color: white;" text="Zoom out" textFill="WHITE" AnchorPane.bottomAnchor="154.0" AnchorPane.rightAnchor="3.0" />
+      <Slider fx:id="ballRatioSlider" blockIncrement="0.01" layoutX="890.0" layoutY="170.0" max="2.0" min="-1.0" onMouseReleased="#onballRatioSliderChanged" orientation="VERTICAL" prefHeight="225.0" prefWidth="8.0" AnchorPane.bottomAnchor="169.0" AnchorPane.rightAnchor="67.0" />
+      <Label layoutX="886.0" layoutY="153.0" style="-fx-border-color: white;" text="Ball" textFill="WHITE" AnchorPane.bottomAnchor="394.0" AnchorPane.rightAnchor="62.0" />
+      <Pane layoutX="-1.0" layoutY="435.0" prefHeight="129.0" prefWidth="187.0" style="-fx-background-color: white; -fx-border-color: black;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <RadioButton layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onCreateRadioChoosed" prefHeight="16.0" prefWidth="147.0" selected="true" text="Create Astronomical">
+               <toggleGroup>
+                  <ToggleGroup fx:id="toolbox" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton layoutX="14.0" layoutY="49.0" mnemonicParsing="false" onAction="#onTSRadioChoosed" text="TimeStop" toggleGroup="$toolbox" />
+            <RadioButton layoutX="14.0" layoutY="85.0" mnemonicParsing="false" onAction="#onGRRadioChoosed" text="gravitational/ Repulsive &#10;force" toggleGroup="$toolbox" />
+         </children>
+      </Pane>
+      <Accordion fx:id="TS_toolbox" layoutX="18.0" layoutY="24.0" prefHeight="68.0" prefWidth="254.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <panes>
+            <TitledPane animated="false" prefHeight="60.0" prefWidth="254.0" text="TimeStop">
+               <content>
+                  <AnchorPane prefHeight="49.0" prefWidth="252.0" visible="false">
+                     <children>
+                        <Slider fx:id="TimeStopRadiusSlider" blockIncrement="1.0" layoutX="69.0" layoutY="32.0" majorTickUnit="500.0" max="2000.0" minorTickCount="1" onMouseReleased="#onTimeStopRadiusSliderChanged" prefHeight="21.0" prefWidth="140.0" showTickLabels="true" showTickMarks="true" value="50.0" AnchorPane.leftAnchor="69.0" AnchorPane.topAnchor="32.0" />
+                        <Label layoutX="14.0" layoutY="34.0" text="Radius" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="25.0" />
+                     </children>
+                  </AnchorPane>
+               </content></TitledPane>
+         </panes>
+      </Accordion>
+      <Accordion fx:id="Create_toolbox" layoutX="8.0" layoutY="14.0" prefHeight="185.0" prefWidth="221.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <panes>
+          <TitledPane animated="false" prefHeight="185.0" prefWidth="237.0" text="Create Astronomical">
+               <content>
+                  <AnchorPane prefHeight="151.0" prefWidth="236.0">
+                     <children>
+                        <Slider fx:id="MassSlider" blockIncrement="1.0" layoutX="92.0" layoutY="14.0" majorTickUnit="100.0" max="1000.0" minorTickCount="100" onMouseReleased="#onMassSliderChanged" showTickMarks="true" value="1.0" />
+                        <Slider fx:id="VXSlider" blockIncrement="0.1" layoutX="92.0" layoutY="55.0" majorTickUnit="10.0" max="10.0" min="-10.0" minorTickCount="1" onMouseReleased="#onVXSliderChanged" showTickLabels="true" />
+                        <Label layoutX="14.0" layoutY="13.0" text="Mass" />
+                        <Label layoutX="14.0" layoutY="53.0" prefHeight="21.0" prefWidth="46.0" text="V: X" />
+                        <Label layoutX="14.0" layoutY="98.0" text="V: Y" />
+                        <Slider fx:id="VYSlider" blockIncrement="0.1" layoutX="92.0" layoutY="100.0" majorTickUnit="10.0" max="10.0" min="-10.0" onMouseReleased="#onVYSliderChanged" showTickLabels="true" showTickMarks="true" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+         </panes>
+      </Accordion>
+      <Accordion fx:id="GR_toolbox" layoutX="42.0" layoutY="107.0" prefHeight="98.0" prefWidth="254.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <panes>
+            <TitledPane animated="false" prefHeight="71.0" prefWidth="254.0" text="gravitational/ Repulsive force">
+               <content>
+                  <AnchorPane prefHeight="95.0" prefWidth="252.0">
+                     <children>
+                        <Label layoutX="24.0" layoutY="19.0" text="Force" />
+                        <Slider fx:id="ForceSlider" blockIncrement="1.0" layoutX="85.0" layoutY="20.0" majorTickUnit="25000.0" max="100000.0" minorTickCount="1" onMouseReleased="#onForceSliderChanged" showTickLabels="true" showTickMarks="true" value="100.0" />
+                     </children>
+                  </AnchorPane>
+               </content></TitledPane>
+         </panes>
+      </Accordion>
+      <Button layoutX="906.0" layoutY="98.0" mnemonicParsing="false" onAction="#OnResetPressed" text="RESET" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="98.0" />
+   </children>
+</AnchorPane>
