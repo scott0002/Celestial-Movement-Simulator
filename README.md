@@ -5,8 +5,7 @@ In this project, any of "University" means "Universe", it's my stupid spelling e
 
 How to use?
 
-1.
-Upper right corner's button can stop or play the animation.
+1.Upper right corner's button can stop or play the animation.
 
 On its left side, has a text show how many balls you created,
 more specifically, how many balls in Universe's ArrayList.
@@ -17,8 +16,7 @@ Under the play/stop button, has a reset button,
 clicking it can make all sliders become an initial state.
 And making all balls disappear.
 
-2.
-The lower right corner has a slider and four buttons,
+2.The lower right corner has a slider and four buttons,
 these buttons can move the user's view,
 and the slider can change how far can you move.
 
@@ -27,8 +25,7 @@ left side one can zoom in the whole window, on the other word, anything's distan
 its also can zoom out the whole window, on the other word, whole thing's distance lengthens.
 right side one can make only balls bigger or smaller.
 
-3.
-Lower left corner has three radio button, click on any one can change to their unique mode.
+3.Lower left corner has three radio button, click on any one can change to their unique mode.
 According to which button(or mode), you choose, will showing the corresponding toolbox.
 
 4.
