@@ -71,11 +71,11 @@ public class controller implements Initializable{
     private Slider TimeStopRadiusSlider;
     @FXML
     private Slider ForceSlider;
-    
+    @FXML
+    private Label number;
     public Timeline fps;
 	
 	int count=0;
-	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	  fps = new Timeline(new KeyFrame(Duration.millis(1*playspeedRatio),(e)-> {
@@ -96,6 +96,7 @@ public class controller implements Initializable{
 		  		TimeStop();
       		sketch();
       	    University.next_State();
+      	    number.setText(String.valueOf(University.Astronomical_list.size()));
 	      }));
 	  fps.setCycleCount(Timeline.INDEFINITE);
 	}
@@ -122,13 +123,15 @@ public class controller implements Initializable{
 	}
 	public void ClickEventReleased(MouseEvent e)
 	{
+		number.setText(String.valueOf(University.Astronomical_list.size()));
 		if(MouseState==1)
 		{
+			if(University.Astronomical_list.size()<170)
 			if(e.getButton()==MouseButton.PRIMARY)
-				University.createNewAstronomical(e.getX()/controller.displayRatio,e.getY()/controller.displayRatio,CreateVX,CreateVY,CreateMass,100);
+				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass,100);
 			else if(e.getButton()==MouseButton.SECONDARY)
 			{
-				////////
+				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass*1000,100);
 			}
 			sketch();
 		}
@@ -139,6 +142,10 @@ public class controller implements Initializable{
 				 University.Astronomical_list.get(i).TimeStop=false;
 			}
 			TimeStop=false;
+			if(e.getButton()==MouseButton.SECONDARY)
+			{
+				TimeStopRadius/=5;
+			}
 		}
 		else if(MouseState==3)
 		{
@@ -150,17 +157,21 @@ public class controller implements Initializable{
 	{
 		if(MouseState==2)
 		{
+			if(e.getButton()==MouseButton.SECONDARY)
+			{
+				TimeStopRadius*=5;
+			}
 			TimeStop=true;
-			TimeStopX=e.getX();
-			TimeStopY=e.getY();
+			TimeStopX=(e.getX()-root.getWidth()/2);
+			TimeStopY=(e.getY()-root.getHeight()/2);
 		}
 		else if(MouseState==3)
 		{
 			GR_Mode=true;
 			if(e.getButton()==MouseButton.PRIMARY)
-				GR_Object=new Astronomical(new Vector(e.getX()/controller.displayRatio,e.getY()/controller.displayRatio),new Vector(), GR_Mass,100);
+				GR_Object=new Astronomical(new Vector((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio),new Vector(), GR_Mass,100);
 			else if(e.getButton()==MouseButton.SECONDARY)
-				GR_Object=new Astronomical(new Vector(e.getX()/controller.displayRatio,e.getY()/controller.displayRatio),new Vector(), -GR_Mass,100);
+				GR_Object=new Astronomical(new Vector((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio),new Vector(), -GR_Mass,100);
 		}
 	}
 	
@@ -168,12 +179,12 @@ public class controller implements Initializable{
 	{
 		if(MouseState==2)
 		{
-			TimeStopX=e.getX();
-			TimeStopY=e.getY();
+			TimeStopX=(e.getX()-root.getWidth()/2);
+			TimeStopY=(e.getY()-root.getHeight()/2);
 		}
 		else if(MouseState==3 && GR_Mode)
 		{
-			GR_Object.setCoor(new Vector(e.getX()/controller.displayRatio,e.getY()/controller.displayRatio));
+			GR_Object.setCoor(new Vector((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio));
 		}
 	}
 	
@@ -283,16 +294,16 @@ public class controller implements Initializable{
   	    if(TimeStop)
   	    {
   	    	Circle circle = new Circle(TimeStopRadius*controller.displayRatio, Color.WHITE);
-      		circle.setLayoutX(TimeStopX);
-      		circle.setLayoutY(TimeStopY);
+      		circle.setLayoutX(TimeStopX+root.getWidth()/2);
+      		circle.setLayoutY(TimeStopY+root.getHeight()/2);
       		root.getChildren().add(circle);
   	    }
   	    for(int i=0; i<University.Astronomical_list.size(); i++)
         {
   	    	if(University.Astronomical_list.get(i).GR_Mode) continue;
   	    	Circle circle = new Circle(University.Astronomical_list.get(i).radius*controller.displayRatio*controller.ballRatio, University.Astronomical_list.get(i).getColor());
-      		circle.setLayoutX(University.Astronomical_list.get(i).coordinate.getX()*controller.displayRatio);
-      		circle.setLayoutY(University.Astronomical_list.get(i).coordinate.getY()*controller.displayRatio);
+      		circle.setLayoutX(University.Astronomical_list.get(i).coordinate.getX()*controller.displayRatio+root.getWidth()/2);
+      		circle.setLayoutY(University.Astronomical_list.get(i).coordinate.getY()*controller.displayRatio+root.getHeight()/2);
       		root.getChildren().add(circle);
         }
   	    
@@ -318,7 +329,7 @@ public class controller implements Initializable{
 	{
 		for(int i=0; i<University.Astronomical_list.size(); i++)
 		{
-			if(University.Astronomical_list.get(i).getDistance(new Vector(TimeStopX/controller.displayRatio,TimeStopY/controller.displayRatio))<TimeStopRadius*10) 
+			if(University.Astronomical_list.get(i).getDistance(new Vector(TimeStopX/controller.displayRatio,TimeStopY/controller.displayRatio))<TimeStopRadius*100) 
 				University.Astronomical_list.get(i).TimeStop=true;
 			else
 			{

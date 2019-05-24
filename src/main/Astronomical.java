@@ -98,7 +98,7 @@ public class Astronomical {
 	 {
 		 double dx=b.minus(this.coordinate).getX();
 		 double dy=b.minus(this.coordinate).getY();
-		 return Math.sqrt(dx*dx + dy*dy)*10;
+		 return Math.sqrt(dx*dx + dy*dy)*100;
 	 }
 	 public Vector getUnitVector(Astronomical b)
 	 {
