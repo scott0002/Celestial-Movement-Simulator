@@ -2,7 +2,7 @@ package main;
 
 import java.util.ArrayList;
 
-import javafx.scene.paint.Color;
+
 
 public class University {
 		public static Double G_coef= 6.67408; //gravitational_constant
