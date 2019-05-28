@@ -1,24 +1,21 @@
 package main;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
+
 import java.util.Random;
 import java.util.ResourceBundle;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -42,7 +39,8 @@ public class controller implements Initializable{
 	public static boolean TimeStop=false;
 	public static boolean GR_Mode=false;
 	public static Astronomical GR_Object;
-	
+	public static boolean blackholeappear=false;
+	public static int limit=170;
     @FXML
     public Pane root;//pane
     @FXML
@@ -119,6 +117,8 @@ public class controller implements Initializable{
 		shift.setValue(500);
 		displayRatio=1;
 		displayRatioSlider.setValue(0);
+		blackholeappear=false;
+		limit=170;
 
 	}
 	public void ClickEventReleased(MouseEvent e)
@@ -126,7 +126,7 @@ public class controller implements Initializable{
 		number.setText(String.valueOf(University.Astronomical_list.size()));
 		if(MouseState==1)
 		{
-			if(University.Astronomical_list.size()<170)
+			if(University.Astronomical_list.size()<limit)
 			if(e.getButton()==MouseButton.PRIMARY)
 				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass,100);
 			else if(e.getButton()==MouseButton.SECONDARY)
@@ -177,7 +177,19 @@ public class controller implements Initializable{
 	
 	public void ClickEventDragged(MouseEvent e)
 	{
-		if(MouseState==2)
+		number.setText(String.valueOf(University.Astronomical_list.size()));
+		if(MouseState==1)
+		{
+			if(University.Astronomical_list.size()<limit)
+			if(e.getButton()==MouseButton.PRIMARY)
+				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass,100);
+			else if(e.getButton()==MouseButton.SECONDARY)
+			{
+				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass*1000,100);
+			}
+			sketch();
+		}
+		else if(MouseState==2)
 		{
 			TimeStopX=(e.getX()-root.getWidth()/2);
 			TimeStopY=(e.getY()-root.getHeight()/2);

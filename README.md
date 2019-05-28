@@ -57,3 +57,6 @@ Click on Mouse primary button,
 Cursor position will generate a gravitational force, its scalar is according your Force.
 Click on Mouse secondary button,
 Cursor position will generate a Repulsive force, its scalar is according your Force.
+
+5.BlackHole
+When a ball's Mass more than 10000000, it will become blackhole, it is unmovable, and its radius multiplied ten. 
