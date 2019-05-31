@@ -1,21 +1,16 @@
 package main;
 
 import java.net.URL;
-
-import java.util.Random;
 import java.util.ResourceBundle;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -26,7 +21,6 @@ import javafx.util.Duration;
 public class controller implements Initializable{
 	public static int MouseState=1;
 	public static int TimeStopRadius=50;
-	public static double playspeedRatio=1;
 	public static double CreateVX=0;
 	public static double CreateVY=0;
 	public static double CreateMass=1;
@@ -39,7 +33,6 @@ public class controller implements Initializable{
 	public static boolean TimeStop=false;
 	public static boolean GR_Mode=false;
 	public static Astronomical GR_Object;
-	public static boolean blackholeappear=false;
 	public static int limit=170;
     @FXML
     public Pane root;//pane
@@ -72,24 +65,9 @@ public class controller implements Initializable{
     @FXML
     private Label number;
     public Timeline fps;
-	
-	int count=0;
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-	  fps = new Timeline(new KeyFrame(Duration.millis(1*playspeedRatio),(e)-> {
-		  //Random Mode
-//		  if(count<1000)
-//		  {
-//			  University.createNewAstronomical(controller.randomGenerator(System.currentTimeMillis())*controller.randomGenerator(System.currentTimeMillis())%2000,controller.randomGenerator(System.currentTimeMillis())%1000, -5, 5, 300, 100);
-//			  University.createNewAstronomical(controller.randomGenerator(System.currentTimeMillis())*controller.randomGenerator(System.currentTimeMillis())*controller.randomGenerator(System.currentTimeMillis())%2000,controller.randomGenerator(System.currentTimeMillis())*controller.randomGenerator(System.currentTimeMillis())*controller.randomGenerator(System.currentTimeMillis())*controller.randomGenerator(System.currentTimeMillis())%1000, 5, -5, 300, 100);
-//			  count++;
-//		  }
-//		  if(count==1000)
-//		  {
-//			  University.createNewAstronomical(5000, 5000, 0, 0, 100000000, 100);
-//			  count++;
-//		  }
-		  /////////////////////////////////////////
+	  fps = new Timeline(new KeyFrame(Duration.millis(1),(e)-> {
 		  	if(TimeStop)
 		  		TimeStop();
       		sketch();
@@ -117,9 +95,7 @@ public class controller implements Initializable{
 		shift.setValue(500);
 		displayRatio=1;
 		displayRatioSlider.setValue(0);
-		blackholeappear=false;
 		limit=170;
-
 	}
 	public void ClickEventReleased(MouseEvent e)
 	{
@@ -127,40 +103,29 @@ public class controller implements Initializable{
 		if(MouseState==1)
 		{
 			if(University.Astronomical_list.size()<limit)
-			if(e.getButton()==MouseButton.PRIMARY)
-				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass,100);
-			else if(e.getButton()==MouseButton.SECONDARY)
-			{
-				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass*1000,100);
-			}
+				if(e.getButton()==MouseButton.PRIMARY)
+					University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass);
+				else if(e.getButton()==MouseButton.SECONDARY)
+					University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass*1000);
 			sketch();
 		}
 		else if(MouseState==2)
 		{
 			for(int i=0; i<University.Astronomical_list.size(); i++)
-			{
 				 University.Astronomical_list.get(i).TimeStop=false;
-			}
 			TimeStop=false;
 			if(e.getButton()==MouseButton.SECONDARY)
-			{
 				TimeStopRadius/=5;
-			}
 		}
 		else if(MouseState==3)
-		{
 			GR_Mode=false;
-		}
 	}	
-	
 	public void ClickEventPressed(MouseEvent e)
 	{
 		if(MouseState==2)
 		{
 			if(e.getButton()==MouseButton.SECONDARY)
-			{
 				TimeStopRadius*=5;
-			}
 			TimeStop=true;
 			TimeStopX=(e.getX()-root.getWidth()/2);
 			TimeStopY=(e.getY()-root.getHeight()/2);
@@ -169,12 +134,11 @@ public class controller implements Initializable{
 		{
 			GR_Mode=true;
 			if(e.getButton()==MouseButton.PRIMARY)
-				GR_Object=new Astronomical(new Vector((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio),new Vector(), GR_Mass,100);
+				GR_Object=new Astronomical(new Vector((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio),new Vector(), GR_Mass);
 			else if(e.getButton()==MouseButton.SECONDARY)
-				GR_Object=new Astronomical(new Vector((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio),new Vector(), -GR_Mass,100);
+				GR_Object=new Astronomical(new Vector((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio),new Vector(), -GR_Mass);
 		}
 	}
-	
 	public void ClickEventDragged(MouseEvent e)
 	{
 		number.setText(String.valueOf(University.Astronomical_list.size()));
@@ -182,11 +146,9 @@ public class controller implements Initializable{
 		{
 			if(University.Astronomical_list.size()<limit)
 			if(e.getButton()==MouseButton.PRIMARY)
-				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass,100);
+				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass);
 			else if(e.getButton()==MouseButton.SECONDARY)
-			{
-				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass*1000,100);
-			}
+				University.createNewAstronomical((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio,CreateVX,CreateVY,CreateMass*1000);
 			sketch();
 		}
 		else if(MouseState==2)
@@ -195,12 +157,8 @@ public class controller implements Initializable{
 			TimeStopY=(e.getY()-root.getHeight()/2);
 		}
 		else if(MouseState==3 && GR_Mode)
-		{
 			GR_Object.setCoor(new Vector((e.getX()-root.getWidth()/2)/controller.displayRatio,(e.getY()-root.getHeight()/2)/controller.displayRatio));
-		}
 	}
-	
-	
 	@FXML
     public void onCreateRadioChoosed() {
 		Create_toolbox.setVisible(true);
@@ -208,7 +166,6 @@ public class controller implements Initializable{
 		GR_toolbox.setVisible(false);
 		MouseState=1;
     }
-	
 	@FXML
     public void onTSRadioChoosed() {
 		Create_toolbox.setVisible(false);
@@ -216,7 +173,6 @@ public class controller implements Initializable{
 		GR_toolbox.setVisible(false);
 		MouseState=2;
     }
-	
 	@FXML
     public void onGRRadioChoosed() {
 		Create_toolbox.setVisible(false);
@@ -224,82 +180,32 @@ public class controller implements Initializable{
 		GR_toolbox.setVisible(true);
 		MouseState=3;
     }
-	
-	@FXML
-    public void onShiftChanged() {
-        controller.shiftRatio = (int) shift.getValue();
-    }
-	
-	@FXML
-    public void onTimeStopRadiusSliderChanged() {
-		controller.TimeStopRadius=(int) TimeStopRadiusSlider.getValue();
-    }
-	
-	
 	@FXML
     public void onDisplayRatioSliderChanged() {
         controller.displayRatio = Math.pow(10, displayRatioSlider.getValue());
         sketch();
     }
-	
 	@FXML
-    public void onMassSliderChanged() {
-        controller.CreateMass = MassSlider.getValue();
-    }
+    public void onShiftChanged() {controller.shiftRatio = (int) shift.getValue();}
 	@FXML
-    public void onVXSliderChanged() {
-		controller.CreateVX = VXSlider.getValue();
-    }
+    public void onTimeStopRadiusSliderChanged() {controller.TimeStopRadius=(int) TimeStopRadiusSlider.getValue();}
 	@FXML
-    public void onVYSliderChanged() {
-		controller.CreateVY = VYSlider.getValue();
-    }
-	
+    public void onMassSliderChanged() {controller.CreateMass = MassSlider.getValue();}
 	@FXML
-    public void onForceSliderChanged() {
-		controller.GR_Mass = ForceSlider.getValue();
-    }
-	
-	
+    public void onVXSliderChanged() {controller.CreateVX = VXSlider.getValue();}
 	@FXML
-    public void onballRatioSliderChanged() {
-        controller.ballRatio = Math.pow(10, ballRatioSlider.getValue());
-        sketch();
-    }
-	
-	public void OnResetPressed(ActionEvent e) {
-		University.Astronomical_list.clear();
-		sketch();
-		reset();
-	};
-	
-	public void OnplayPressed(ActionEvent e) {
-		fps.play();
-		playBtn.setVisible(false);
-		stopBtn.setVisible(true);
-	};
-	public void OnstopPressed(ActionEvent e) {
-		fps.stop();
-		playBtn.setVisible(true);
-		stopBtn.setVisible(false);
-	};
-	public void shiftup(ActionEvent e) {
-		shift(3);
-		sketch();
-	};
-	public void shiftdown(ActionEvent e) {
-		shift(2);
-		sketch();
-	};
-	public void shiftright(ActionEvent e) {
-		shift(1);
-		sketch();
-	};
-	public void shiftleft(ActionEvent e) {
-		shift(0);
-		sketch();
-	};
-	
+    public void onVYSliderChanged() {controller.CreateVY = VYSlider.getValue();}
+	@FXML
+    public void onForceSliderChanged() {controller.GR_Mass = ForceSlider.getValue();}
+	@FXML
+    public void onballRatioSliderChanged() {controller.ballRatio = Math.pow(10, ballRatioSlider.getValue()); sketch();}
+	public void OnResetPressed(ActionEvent e) {University.Astronomical_list.clear(); sketch(); reset();}
+	public void OnplayPressed(ActionEvent e) {fps.play(); playBtn.setVisible(false); stopBtn.setVisible(true);}
+	public void OnstopPressed(ActionEvent e) {fps.stop(); playBtn.setVisible(true); stopBtn.setVisible(false);}
+	public void shiftup(ActionEvent e) {shift(3); sketch();}
+	public void shiftdown(ActionEvent e) {shift(2); sketch();}
+	public void shiftright(ActionEvent e) {shift(1); sketch();}
+	public void shiftleft(ActionEvent e) {shift(0); sketch();}
 	public void sketch()
 	{
 		root.getChildren().clear();
@@ -312,42 +218,25 @@ public class controller implements Initializable{
   	    }
   	    for(int i=0; i<University.Astronomical_list.size(); i++)
         {
-  	    	if(University.Astronomical_list.get(i).GR_Mode) continue;
   	    	Circle circle = new Circle(University.Astronomical_list.get(i).radius*controller.displayRatio*controller.ballRatio, University.Astronomical_list.get(i).getColor());
       		circle.setLayoutX(University.Astronomical_list.get(i).coordinate.getX()*controller.displayRatio+root.getWidth()/2);
       		circle.setLayoutY(University.Astronomical_list.get(i).coordinate.getY()*controller.displayRatio+root.getHeight()/2);
       		root.getChildren().add(circle);
         }
-  	    
 	}
-	 
 	public void shift(int direct)//0 right, 1 left, 2 up, 3 down
 	{
 		int dx[]= {1,-1,0,0};
 		int dy[]= {0,0,-1,1};
 		for(int i=0; i<University.Astronomical_list.size(); i++)
-        {
 			University.Astronomical_list.get(i).CoordinateShift(shiftRatio*dx[direct]/controller.displayRatio,shiftRatio*dy[direct]/controller.displayRatio);
-        }	
 	}
-	
-	public static double randomGenerator(long seed) {
-        Random generator = new Random(seed);
-        double num = generator.nextDouble() * 1000;
-
-        return num;
-    }
 	public void TimeStop()
 	{
 		for(int i=0; i<University.Astronomical_list.size(); i++)
-		{
 			if(University.Astronomical_list.get(i).getDistance(new Vector(TimeStopX/controller.displayRatio,TimeStopY/controller.displayRatio))<TimeStopRadius*100) 
 				University.Astronomical_list.get(i).TimeStop=true;
 			else
-			{
 				University.Astronomical_list.get(i).TimeStop=false;
-			}
-		}
 	}
-		
 }
