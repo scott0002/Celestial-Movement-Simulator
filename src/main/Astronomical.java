@@ -6,53 +6,20 @@ import javafx.scene.paint.Paint;
 public class Astronomical {
 	 public boolean BlackHole; 
 	 public boolean TimeStop;
-	 public boolean GR_Mode;
-	 Vector init_Coordinate;
-	 Vector init_Velocity ;
 	 Vector coordinate;
 	 Vector velocity;
 	 Vector acceleration;
 	 double Mass_coef; 
-	 int Mass_exp; 
 	 double radius;
-	 //int density;
 	 Color color;
-	 Astronomical()
+	 Astronomical(Vector coor, Vector velo, double m_coef)
 	 {
 		 this.BlackHole=false; 
-		 this.GR_Mode=false;
 		 this.TimeStop=false;
-		 this.init_Coordinate=new Vector();
-		 this.init_Velocity=new Vector();
-		 this.coordinate=init_Coordinate;
-		 this.velocity=init_Velocity;
-		 this.acceleration=new Vector();
-		 this.Mass_coef=0.0;
-		 this.Mass_exp=0;
-		 this.radius=0;
-		 this.color=Color.color(Math.random(), Math.random(), Math.random());
-		 if(this.Mass_coef>=10000000)
-		 {
-			 this.radius*=10;
-			 this.BlackHole=true;
-			 this.color=Color.BLACK;
-			 controller.blackholeappear=true;
-			 controller.limit=100;
-		 }
-		 //color
-	 }
-	 Astronomical(Vector coor, Vector velo, double m_coef, int m_exp)
-	 {
-		 this.BlackHole=false; 
-		 this.GR_Mode=false;
-		 this.TimeStop=false;
-		 this.init_Coordinate=coor;
-		 this.init_Velocity=velo;
-		 this.coordinate=init_Coordinate;
-		 this.velocity=init_Velocity;
+		 this.coordinate=coor;
+		 this.velocity=velo;
 		 this.acceleration=new Vector();
 		 this.Mass_coef=m_coef;
-		 this.Mass_exp=m_exp;
 		 this.radius=University.radiusbase*(Math.log10(m_coef)+1);
 		 this.color=Color.color(Math.random(), Math.random(), Math.random());
 		 if(this.Mass_coef>=10000000)
@@ -60,52 +27,14 @@ public class Astronomical {
 			 this.radius*=10;
 			 this.BlackHole=true;
 			 this.color=Color.BLACK;
-			 controller.blackholeappear=true;
 			 controller.limit=100;
 		 }
-		 //color
 	 }
-//	 Astronomical(Vector coor, Vector velo, double m_coef, int m_exp, Color color)
-//	 {
-//		 this.GR_Mode=false;
-//		 this.TimeStop=false;
-//		 this.init_Coordinate=coor;
-//		 this.init_Velocity=velo;
-//		 this.coordinate=init_Coordinate;
-//		 this.velocity=init_Velocity;
-//		 this.acceleration=new Vector();
-//		 this.Mass_coef=m_coef;
-//		 this.Mass_exp=m_exp;
-//		 this.radius=University.radiusbase*(Math.log10(m_coef)+1);
-//		 this.color=color;
-//		 //color
-//	 }
-//	 Astronomical(Vector coor, Vector velo, double m_coef, int m_exp, Color color,double radius)
-//	 {
-//		 this.GR_Mode=false;
-//		 this.TimeStop=false;
-//		 this.init_Coordinate=coor;
-//		 this.init_Velocity=velo;
-//		 this.coordinate=init_Coordinate;
-//		 this.velocity=init_Velocity;
-//		 this.acceleration=new Vector();
-//		 this.Mass_coef=m_coef;
-//		 this.Mass_exp=m_exp;
-//		 this.radius=University.radiusbase*(Math.log10(m_coef)+1);
-//		 this.color=color;
-//		 this.radius=radius;
-//		 //color
-//	 }
-
-	public void nextState()
+	 public void nextState()
 	 {
 		 if(BlackHole || TimeStop) return;
 		 this.coordinate = this.coordinate.plus(this.velocity);
 		 this.velocity = this.velocity.plus(this.acceleration);
-	 }
-	 public void setAcceleration(Vector a)
-	 {
-		 this.acceleration=a;
 	 }
 	 public double getDistance(Astronomical b)
 	 {
@@ -119,14 +48,12 @@ public class Astronomical {
 		 double dy=b.minus(this.coordinate).getY();
 		 return Math.sqrt(dx*dx + dy*dy)*100;
 	 }
-	 public Vector getUnitVector(Astronomical b)
+	 public Vector getUnitVector(Astronomical b) 
 	 {
 		 return b.coordinate.minus(this.coordinate).multiplyConstant(1.0/this.getDistance(b));
 	 }
 	 public Vector getGravityTransferToAcceleration(Astronomical b)
 	 {
-//		 double pc=University.proportional_scale_coef;
-//		 double pp=University.proportional_scale_exp;
 		 double dis=this.getDistance(b);
 		 return this.getUnitVector(b).multiplyConstant(b.Mass_coef*University.G_coef/(dis*dis)) ;
 	 }
@@ -138,26 +65,13 @@ public class Astronomical {
 		 double newMass=this.Mass_coef+b.Mass_coef;
 		 Vector newvelo=thismomentum.plus(bmomentum).multiplyConstant(1/newMass);
 		 if(this.BlackHole)
-			 return new Astronomical(this.coordinate,this.velocity,this.Mass_coef,100);
+			 return new Astronomical(this.coordinate,this.velocity,this.Mass_coef);
 		 else if(b.BlackHole)
-			 return new Astronomical(b.coordinate,b.velocity,b.Mass_coef,100);
+			 return new Astronomical(b.coordinate,b.velocity,b.Mass_coef);
 		 else
-			 return new Astronomical(newcoor,newvelo,newMass,100);
+			 return new Astronomical(newcoor,newvelo,newMass);
 	 }
-	 public void CoordinateShift(double dx, double dy)
-	 {
-		 this.coordinate=this.coordinate.plus(new Vector(dx,dy));
-	 }
-	 public void setColor(Color color) {
-			// TODO Auto-generated method stub
-			this.color=color;
-		}
-	public Paint getColor() {
-		// TODO Auto-generated method stub
-		return color;
-	}
-	public void setCoor(Vector v)
-	{
-		this.coordinate=v;
-	}
+	 public void CoordinateShift(double dx, double dy) {this.coordinate=this.coordinate.plus(new Vector(dx,dy));}
+	 public Paint getColor() {return color;}
+	 public void setCoor(Vector v) {this.coordinate=v;}
 }
